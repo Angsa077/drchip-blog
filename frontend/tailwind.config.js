@@ -4,7 +4,20 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#FFD369",
+        dark: {
+          light: "#393E46",
+          hard: "#FFD369",
+          soft: "#FFD369",
+        },
+      },
+      fontFamily: {
+        opensans: ["'Open Sans'", "sans-serif"],
+        roboto: ["'Roboto'", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 }

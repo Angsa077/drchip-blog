@@ -1,37 +1,88 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { MdKeyboardArrowDown } from 'react-icons/md';
+
 import { images } from "../constants";
 
-const navItemInfo = [
-    {name: "Home"},
-    {name: "Articles"},
-    {name: "Pages"},
-    {name: "Pricing"},
-    {name: "Faq"}
-]
+const navItemsInfo = [
+    { name: "Home", type: "link" },
+    { name: "Project", type: "link" },
+    { name: "Pages", type: "dropdown", items: ["About us", "Contact us"] },
+    { name: "Pricing", type: "link" },
+    { name: "Faq", type: "link" },
+];
 
-const NavItem = ({ name }) => {
+const NavItem = ({ item }) => {
+    const [dropdown, setDropdown] = useState(false);
+
+    const toggleDropdownHandler = () => {
+        setDropdown((curState) => {
+            return !curState;
+        });
+    };
+
     return (
         <li className='relative group'>
-            <a href="/" className='px-4 py-2'>Home</a>
-            <span className="text-yellow-300 absolute transition-all duration-500 font-bold right-0 top-0 group-hover:right-[90%] opacity-0 group-hover:opacity-100">/</span>
+            {item.type === "link" ? (
+                <>
+                    <a href="/" className='px-4 py-2'>
+                        {item.name}
+                    </a>
+                    <span className="cursor-pointer text-yellow-300 absolute transition-all duration-500 font-bold right-0 top-0 group-hover:right-[90%] opacity-0 group-hover:opacity-100">
+                        /
+                    </span>
+                </>
+            ) : (
+                <div className='flex flex-col items-center'>
+                    <button className="px-4 py-2 flex gap-x-1 items-center" onClick={toggleDropdownHandler}>
+                        <span>{item.name}</span>
+                        <MdKeyboardArrowDown />
+                    </button>
+                    <div className={`${dropdown ? "block" : 'hidden'} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
+                        <ul className="bg-dark-soft lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
+                            {item.items.map((page) => (
+                                <a href="/" className="hover:bg-white lg:hover:bg-dark-hard hover:text-dark-hard lg:hover:text-white px-4 py-2 text-white lg:text-dark-soft">
+                                    {page}
+                                </a>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
         </li>
     );
 };
 
 const Header = () => {
+    const [navIsVisible, setNavIsVisible] = useState(false);
+
+    const navVisibilityHandler = () => {
+        setNavIsVisible((curState) => {
+            return !curState;
+        });
+    };
+
     return (
-        <section>
+        <section className='sticky top-0 left-0 right-0 z-50'>
             <header className='container mx-auto px-5 flex justify-between py-4 items-center'>
                 <div>
-                    <img src={images.Logo} alt="Logo" width="150px" />
+                    <img src={images.Logo} alt="Logo" className="w-40" />
                 </div>
-                <div className='flex gap-x-9 items-center'>
-                    <ul className='flex gap-x-2 font-semibold'>
-                        {navItemInfo.map((item) =>(
-                            <NavItem key={item.name} name={item.name} />
+                <div className='lg:hidden z-50'>
+                    {navIsVisible ? (
+                        <AiOutlineClose className='w-6 h-6' onClick={navVisibilityHandler} />
+                    ) : (
+                        <AiOutlineMenu className='w-6 h-6' onClick={navVisibilityHandler} />
+                    )}
+                </div>
+                <div className={`${navIsVisible ? "right-0" : "-right-full"
+                    } transition-all duration-300 mt-[56px] lg:mt-0 bg-dark-hard lg:bg-transparent z-[49] flex flex-col w-full lg:w-auto justify-center lg:justify-end lg:flex-row fixed top-0 bottom-0 lg:static gap-x-9 items-center`}>
+                    <ul className='text-white lg:text-dark-soft items-center gap-y-5 flex flex-col lg:flex-row gap-x-2 font-semibold'>
+                        {navItemsInfo.map((item) => (
+                            <NavItem key={item.name} item={item} />
                         ))}
                     </ul>
-                    <button className='border-2 border-yellow-300 px-6 py-2 rounded-full text-yellow-300 font-semibold hover:bg-yellow-300 hover:text-white transition-all duration-300'>Sign in</button>
+                    <button className='mt-5 border-2 lg:border-dark-soft border-white px-6 py-2 rounded-full lg:text-dark-soft text-white font-semibold lg:hover:bg-dark-soft hover:bg-white hover:text-dark-soft lg:hover:text-white transition-all duration-300'>Sign in</button>
                 </div>
             </header>
         </section>
