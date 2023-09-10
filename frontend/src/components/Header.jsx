@@ -8,8 +8,8 @@ const navItemsInfo = [
     { name: "Home", type: "link" },
     { name: "Project", type: "link" },
     { name: "Pages", type: "dropdown", items: ["About us", "Contact us"] },
-    { name: "Pricing", type: "link" },
-    { name: "Faq", type: "link" },
+    { name: "Harga", type: "link" },
+    { name: "Ketentuan", type: "link" },
 ];
 
 const NavItem = ({ item }) => {
@@ -64,7 +64,10 @@ const Header = () => {
 
     return (
         <section className='sticky top-0 left-0 right-0 z-50'>
-            <header className='container mx-auto px-5 flex justify-between py-4 items-center'>
+            {/* <div className="bg-primary bg-opacity-5 p-2 text-primary font-bold text-sm absolute top-0 left-0 right-0 mb-5">
+                No HP: 087741001100, Email: teams@drchip.id, Alamat: Serang, Indonesia
+            </div> */}
+            <header className='container mx-auto px-5 flex justify-between py-4 items-center bg-white mb-4'>
                 <div>
                     <img src={images.Logo} alt="Logo" className="w-40" />
                 </div>
@@ -82,7 +85,7 @@ const Header = () => {
                             <NavItem key={item.name} item={item} />
                         ))}
                     </ul>
-                    <button className='mt-5 border-2 lg:border-dark-soft border-white px-6 py-2 rounded-full lg:text-dark-soft text-white font-semibold lg:hover:bg-dark-soft hover:bg-white hover:text-dark-soft lg:hover:text-white transition-all duration-300'>Sign in</button>
+                    <button className='lg:mt-0 mt-5 border-2 lg:border-dark-soft border-white px-6 py-2 rounded-full lg:text-dark-soft text-white font-semibold lg:hover:bg-dark-soft hover:bg-white hover:text-dark-soft lg:hover:text-white transition-all duration-300'>Sign in</button>
                 </div>
             </header>
         </section>
