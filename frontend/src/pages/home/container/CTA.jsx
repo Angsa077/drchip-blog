@@ -10,11 +10,11 @@ const CTA = () => {
                 </svg>
                 <section className='relative bg-dark-hard px-5'>
                     <div className='container grid grid-cols-12 mx-auto py-10 md:pb-20 lg:place-items-center'>
-                        <div className='col-span-12 lg:col-span-6 ml-10'>
+                        <div className='col-span-12 lg:col-span-6 lg:ml-10'>
                             <h2 className='text-white font-roboto font-bold text-2xl md:text-4xl md:text-center md:leading-normal lg:text-left'>Dapatkan informasi terbaru lainnya pada email kamu setiap minggunya.</h2>
                             <div className='w-full max-w-[494px] mt-12 space-y-3 mx-auto md:space-y-0 md:flex md:items-center md:space-x-2 lg:mx-0'>
-                                <input type="text" className='px-4 py-3 rounded-lg w-full placeholder:text-dark-light' placeholder='Your Email' />
-                                <button className='px-4 py-3 rounded-lg w-full bg-white text-primary font-bold md:w-fit md:whitespace-nowrap'>Get started</button>
+                                <input type="text" className='px-4 py-3 rounded-lg w-full placeholder:text-dark-light' placeholder='Masukan email anda' />
+                                <button className='px-4 py-3 rounded-lg w-full bg-dark-light text-white font-bold md:w-fit md:whitespace-nowrap'>Kirim</button>
                             </div>
                             <p className='text-dark-light text-sm leading-7 mt-6 md:text-center md:text-base lg:text-left'>
                                 <span className='font-bold italic text-dark-light md:not-italic md:font-normal md:text-dark-light'>Dapatkan balasan langsung</span> ketika kamu kirim email jam 8 pagi hingga pukul 10 malam.
