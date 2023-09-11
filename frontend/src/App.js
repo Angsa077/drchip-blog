@@ -9,7 +9,7 @@ function App() {
     <div className="App font-opensans">
       <Routes>
         <Route index path='/' element={ <HomePages /> } />
-        <Route index path='/project/:id' element={ <ProjectDetailPage /> } />
+        <Route path='/project/:id' element={ <ProjectDetailPage /> } />
       </Routes>
     </div>
   );

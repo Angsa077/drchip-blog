@@ -39,9 +39,9 @@ const NavItem = ({ item }) => {
                         <MdKeyboardArrowDown />
                     </button>
                     <div className={`${dropdown ? "block" : 'hidden'} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
-                        <ul className="bg-dark-light lg:bg-transparent text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
-                            {item.items.map((page) => (
-                                <a href="/" className="hover:bg-white lg:hover:bg-dark-light hover:text-dark-light lg:hover:text-white px-4 py-2 text-white lg:text-dark-light">
+                        <ul className="bg-dark-light lg:bg-primary text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
+                            {item.items.map((page, index) => (
+                                <a key={index} href="/" className="hover:bg-white lg:hover:bg-[#ffc05b] hover:text-dark-light lg:hover:text-white px-4 py-2 text-white">
                                     {page}
                                 </a>
                             ))}
@@ -80,12 +80,12 @@ const Header = () => {
                 </div>
                 <div className={`${navIsVisible ? "right-0" : "-right-full"
                     } transition-all duration-300 mt-[56px] lg:mt-0 bg-dark-soft lg:bg-transparent z-[49] flex flex-col w-full lg:w-auto justify-center lg:justify-end lg:flex-row fixed top-0 bottom-0 lg:static gap-x-9 items-center`}>
-                    <ul className='text-white lg:text-dark-light items-center gap-y-5 flex flex-col lg:flex-row gap-x-2 font-semibold'>
+                    <ul className='text-white lg:text-primary items-center gap-y-5 flex flex-col lg:flex-row gap-x-2 font-semibold'>
                         {navItemsInfo.map((item) => (
                             <NavItem key={item.name} item={item} />
                         ))}
                     </ul>
-                    <button className='lg:mt-0 mt-5 border-2 bg-dark-light lg:bg-white lg:border-dark-light border-dark-light hover:border-white px-6 py-2 rounded-full lg:text-dark-light text-white font-semibold lg:hover:bg-dark-light hover:bg-white hover:text-dark-light lg:hover:text-white transition-all duration-300'>Sign in</button>
+                    <button className='lg:mt-0 mt-5 border-2 bg-dark-light lg:bg-primary lg:border-primary border-dark-light hover:border-white px-6 py-2 rounded-full lg:text-white text-white font-semibold lg:hover:bg-[#ffc05b] hover:bg-white hover:text-dark-light lg:hover:text-white transition-all duration-300'>Sign in</button>
                 </div>
             </header>
         </section>
