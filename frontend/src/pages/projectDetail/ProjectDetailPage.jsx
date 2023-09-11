@@ -5,6 +5,7 @@ import { images } from '../../constants';
 import { Link } from 'react-router-dom';
 import SuggestedPosts from './container/SuggestedPosts';
 import CommentsContainer from '../../components/comments/CommentsContainer';
+import SocialShareButtons from '../../components/SocialShareButtons';
 
 const breadCrumbsData = [
     { name: "Home", link: '/' },
@@ -14,28 +15,28 @@ const breadCrumbsData = [
 
 const postsData = [
     {
-        _id : "1",
-        image : images.Post1Image,
-        title : "Website Gallery Kaminata Architecture",
-        createdAt : "2023-09-10T16:56:59.607+0000"
+        _id: "1",
+        image: images.Post1Image,
+        title: "Website Gallery Kaminata Architecture",
+        createdAt: "2023-09-10T16:56:59.607+0000"
     },
     {
-        _id : "2",
-        image : images.Post1Image,
-        title : "Website Gallery Kaminata Architecture",
-        createdAt : "2023-09-10T16:56:59.607+0000"
+        _id: "2",
+        image: images.Post1Image,
+        title: "Website Gallery Kaminata Architecture",
+        createdAt: "2023-09-10T16:56:59.607+0000"
     },
     {
-        _id : "3",
-        image : images.Post1Image,
-        title : "Website Gallery Kaminata Architecture",
-        createdAt : "2023-09-10T16:56:59.607+0000"
+        _id: "3",
+        image: images.Post1Image,
+        title: "Website Gallery Kaminata Architecture",
+        createdAt: "2023-09-10T16:56:59.607+0000"
     },
     {
-        _id : "4",
-        image : images.Post1Image,
-        title : "Website Gallery Kaminata Architecture",
-        createdAt : "2023-09-10T16:56:59.607+0000"
+        _id: "4",
+        image: images.Post1Image,
+        title: "Website Gallery Kaminata Architecture",
+        createdAt: "2023-09-10T16:56:59.607+0000"
     },
 ];
 
@@ -70,7 +71,26 @@ const ProjectDetailPage = () => {
                     </div>
                     <CommentsContainer className="mt-10" logginedUserId="a" />
                 </article>
-                <SuggestedPosts header="Project Terakhir" posts={postsData} tags={tagsData} className='mt-8 lg:mt-0 lg:max-w-xs'/>
+                <div>
+                    <SuggestedPosts
+                        header="Project Terakhir"
+                        posts={postsData}
+                        tags={tagsData}
+                        className='mt-8 lg:mt-0 lg:max-w-xs'
+                    />
+                    <div className='mt-7'>
+                        <h2 className='font-roboto font-medium text-dark-hard mb-4 md:text-xl'>
+                            Bagikan kepada:
+                        </h2>
+                        <SocialShareButtons
+                            url={encodeURI("https://portfolio-angsa077.vercel.app/"
+                            )}
+                            title={encodeURIComponent(
+                                "My portfolio"
+                            )}
+                        />
+                    </div>
+                </div>
             </section>
         </MainLayout>
     );
