@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 
 import './App.css';
 import HomePages from './pages/home/HomePages';
@@ -9,10 +10,11 @@ function App() {
   return (
     <div className="App font-opensans">
       <Routes>
-        <Route index path='/' element={ <HomePages /> } />
-        <Route path='/project/:id' element={ <ProjectDetailPage /> } />
-        <Route path='/register' element={ <RegisterPage />} />
+        <Route index path='/' element={<HomePages />} />
+        <Route path='/project/:id' element={<ProjectDetailPage />} />
+        <Route path='/register' element={<RegisterPage />} />
       </Routes>
+      <Toaster />
     </div>
   );
 }
