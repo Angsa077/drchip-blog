@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { images } from "../constants";
 import { logout } from '../store/actions/user';
@@ -56,6 +57,7 @@ const NavItem = ({ item }) => {
 };
 
 const Header = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [navIsVisible, setNavIsVisible] = useState(false);
     const userState = useSelector(state => state.user);
@@ -115,7 +117,11 @@ const Header = () => {
                             </div>
                         </div>
                     ) : (
-                        <button className='lg:mt-0 mt-5 border-2 bg-dark-light lg:bg-primary lg:border-primary border-dark-light hover:border-white px-6 py-2 rounded-full lg:text-white text-white font-semibold lg:hover:bg-[#ffc05b] hover:bg-white hover:text-dark-light lg:hover:text-white transition-all duration-300'>Sign in</button>
+                        <button
+                            onClick={() => navigate("/login")}
+                            className='lg:mt-0 mt-5 border-2 bg-dark-light lg:bg-primary lg:border-primary border-dark-light hover:border-white px-6 py-2 rounded-full lg:text-white text-white font-semibold lg:hover:bg-[#ffc05b] hover:bg-white hover:text-dark-light lg:hover:text-white transition-all duration-300'>
+                            Sign in
+                        </button>
                     )}
                 </div>
             </header>
