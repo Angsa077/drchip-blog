@@ -2,15 +2,18 @@ import React, { useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from '@tanstack/react-query';
-import { getUserProfile } from '../../services/index/users'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getUserProfile, updateProfile } from '../../services/index/users'
 
 import MainLayout from '../../components/MainLayout';
 import ProfilePicture from '../../components/ProfilePicture';
+import { userActions } from '../../store/reducers/userReducers';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const queryClient = useQueryClient();
     const userState = useSelector(state => state.user);
 
     const {
@@ -21,7 +24,26 @@ const ProfilePage = () => {
         queryFn: () => {
             return getUserProfile({ token: userState.userInfo.token });
         },
-        queryKey: ['profile']
+        queryKey: ["profile"]
+    });
+
+    const { mutate, isLoading } = useMutation({
+        mutationFn: ({ name, email, password }) => {
+            return updateProfile({
+                token: userState.userInfo.token,
+                userData: { name, email, password },
+            });
+        },
+        onSuccess: (data) => {
+            dispatch(userActions.setUserInfo(data));
+            localStorage.setItem("account", JSON.stringify(data));
+            queryClient.invalidateQueries(["profile"]);
+            toast.success("Berhasil memperbarui profil")
+        },
+        onError: (error) => {
+            toast.error(error.message);
+            console.log(error);
+        },
     });
 
     useEffect(() => {
@@ -44,13 +66,17 @@ const ProfilePage = () => {
         mode: "onChange",
     });
 
-    const submitHandler = (data) => { };
+    const submitHandler = (data) => {
+        const { name, email, password } = data;
+        mutate({ name, email, password })
+    };
 
     console.log(profileData);
     return (
         <MainLayout>
             <section className='container mx-auto px-5 py-10'>
                 <div className='w-full max-w-sm mx-auto'>
+                    <p>{profileData?.name}</p>
                     <ProfilePicture avatar={profileData?.avatar} />
                     <form onSubmit={handleSubmit(submitHandler)}>
                         <div className='flex flex-col mb-6 w-full'>
@@ -88,21 +114,12 @@ const ProfilePage = () => {
                                 )}
                         </div>
                         <div className='flex flex-col mb-6 w-full'>
-                            <label htmlFor="password" className='text-[#5a7184] font-semibold block'>Password</label>
-                            <input type="password" id='password' placeholder='Masukan password anda' className={`placeholder:[#959ead] text-dark-light mt-3 rounded-lg px-5
-                            py-4 font-semibold block outline-none border ${errors.password ? "border-red-500" : "border-[#c3cad9]"}`}
-                                {...register("password", {
-                                    minLength: {
-                                        value: 6,
-                                        message: "Password minimal 6 karakter"
-                                    },
-                                    required: {
-                                        value: true,
-                                        message: "Password wajib diisi"
-                                    },
-                                })} /> {errors.password?.message && (
-                                    <p className='text-red-500 text-xs mt-1'>{errors.password?.message}</p>
-                                )}
+                            <label htmlFor="password" className='text-[#5a7184] font-semibold block'>Password Baru (optional)</label>
+                            <input type="password" id='password'  {...register("password")} placeholder='Masukan password baru anda' className={`placeholder:[#959ead] text-dark-light mt-3 rounded-lg px-5
+                            py-4 font-semibold block outline-none border ${errors.password ? "border-red-500" : "border-[#c3cad9]"}`} />
+                            {errors.password?.message && (
+                                <p className='text-red-500 text-xs mt-1'>{errors.password?.message}</p>
+                            )}
                         </div>
                         <button
                             type='submit'
