@@ -1,16 +1,16 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
 const fileRemover = (filename) => {
-    fs.unlink(path.join(__dirname, "../uploads", filename), function (err){ 
-        if (err & err.code == "ENOENT") {
-            //file doesn't exist
-            console.log(`File ${filename} tidak tersedia, tidak akan dihapus.`);
+    fs.unlink(path.join(__dirname, "../uploads", filename), function (err) {
+        if (err && err.code == "ENOENT") {
+            // file doesn't exist
+            console.log(`File ${filename} doesn't exist, won't remove it.`);
         } else if (err) {
             console.log(err.message);
-            console.log(`Terjadi kesalahan saat menghapus file ${filename}`);
+            console.log(`Error occured while trying to remove file ${filename}`);
         } else {
-            console.log(`Hapus ${filename}`);
+            console.log(`removed ${filename}`);
         }
     });
 };

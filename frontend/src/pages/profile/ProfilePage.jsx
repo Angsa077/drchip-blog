@@ -14,20 +14,17 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const queryClient = useQueryClient();
-    const userState = useSelector(state => state.user);
+    const userState = useSelector((state) => state.user);
 
     const {
-        data: profileData,
-        isLoading: profileIsLoading,
-        error: profileError
-    } = useQuery({
-        queryFn: () => {
-            return getUserProfile({ token: userState.userInfo.token });
-        },
-        queryKey: ["profile"]
-    });
+        data: profileData, isLoading: profileIsLoading } = useQuery({
+            queryFn: () => {
+                return getUserProfile({ token: userState.userInfo.token });
+            },
+            queryKey: ["profile"]
+        });
 
-    const { mutate, isLoading } = useMutation({
+    const { mutate, isLoading: updateProfileIsLoading } = useMutation({
         mutationFn: ({ name, email, password }) => {
             return updateProfile({
                 token: userState.userInfo.token,
@@ -68,7 +65,7 @@ const ProfilePage = () => {
 
     const submitHandler = (data) => {
         const { name, email, password } = data;
-        mutate({ name, email, password })
+        mutate({ name, email, password });
     };
 
     console.log(profileData);
@@ -76,7 +73,6 @@ const ProfilePage = () => {
         <MainLayout>
             <section className='container mx-auto px-5 py-10'>
                 <div className='w-full max-w-sm mx-auto'>
-                    <p>{profileData?.name}</p>
                     <ProfilePicture avatar={profileData?.avatar} />
                     <form onSubmit={handleSubmit(submitHandler)}>
                         <div className='flex flex-col mb-6 w-full'>
@@ -123,7 +119,7 @@ const ProfilePage = () => {
                         </div>
                         <button
                             type='submit'
-                            disabled={!isValid || profileIsLoading}
+                            disabled={!isValid || profileIsLoading || updateProfileIsLoading}
                             className='bg-primary text-white font-bold text-lg py-4 px-8 w-full rounded-lg mb-6 disabled:opacity-70 disabled:cursor-not-allowed'>
                             Perbarui
                         </button>
