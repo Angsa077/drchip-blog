@@ -6,6 +6,7 @@ import HomePages from './pages/home/HomePages';
 import ProjectDetailPage from './pages/projectDetail/ProjectDetailPage';
 import RegisterPage from './pages/register/RegisterPage';
 import LoginPage from './pages/login/LoginPage';
+import ProfilePage from './pages/profile/ProfilePage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/project/:id' element={<ProjectDetailPage />} />
         <Route path='/register' element={<RegisterPage />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
       </Routes>
       <Toaster />
     </div>

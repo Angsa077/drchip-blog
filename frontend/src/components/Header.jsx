@@ -100,13 +100,16 @@ const Header = () => {
                                     <button
                                         className="flex gap-x-1 items-center lg:mt-0 mt-5 border-2 bg-dark-light lg:bg-primary lg:border-primary border-dark-light hover:border-white px-6 py-2 rounded-full lg:text-white text-white font-semibold lg:hover:bg-[#ffc05b] hover:bg-white hover:text-dark-light lg:hover:text-white transition-all duration-300"
                                         onClick={() => setProfileDropdown(!profileDropdown)}>
-                                        <span>Profile</span>
+                                        <span>Akun</span>
                                         <MdKeyboardArrowDown />
                                     </button>
                                     <div className={`${profileDropdown ? "block" : 'hidden'} lg:hidden transition-all duration-500 pt-4 lg:absolute lg:bottom-0 lg:right-0 lg:transform lg:translate-y-full lg:group-hover:block w-max`}>
                                         <ul className="bg-dark-light lg:bg-primary text-center flex flex-col shadow-lg rounded-lg overflow-hidden">
-                                            <button type='button' className="hover:bg-white lg:hover:bg-[#ffc05b] hover:text-dark-light lg:hover:text-white px-4 py-2 text-white">
-                                                Dashboard
+                                            <button
+                                                onClick={() => navigate("/profile")}
+                                                type='button'
+                                                className="hover:bg-white lg:hover:bg-[#ffc05b] hover:text-dark-light lg:hover:text-white px-4 py-2 text-white">
+                                                Profile Page
                                             </button>
                                             <button onClick={logoutHandler} type='button' className="hover:bg-white lg:hover:bg-[#ffc05b] hover:text-dark-light lg:hover:text-white px-4 py-2 text-white">
                                                 Logout
