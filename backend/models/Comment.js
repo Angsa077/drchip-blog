@@ -9,7 +9,7 @@ const CommentSchema = new Schema (
         parent: { type: Schema.Types.ObjectId, ref:"Comment", default: null },
         replyOnUser: { type: Schema.Types.ObjectId, ref:"User", default: null },
     },
-    { timestamp: true }
+    { timestamps: true, toJSON: { virtuals: true } }
 );
 
 //membuat relasi dengan sesama comment (parent)

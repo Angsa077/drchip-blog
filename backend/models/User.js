@@ -12,7 +12,7 @@ const UserSchema = new Schema (
         verificationCode: { type: String, required: false },
         admin: { type: Boolean, default: false },
     },
-    { timestamp: true }
+    { timestamps: true }
 );
 
 UserSchema.pre('save', async function(next){

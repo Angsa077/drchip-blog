@@ -4,7 +4,7 @@ const PostCategoriesSchema = new Schema(
     {
         name: { type: String, required: true },
     },
-    { timestamp: true }
+    { timestamps: true }
 );
 
 const PostCategories = model("PostCategories", PostCategoriesSchema);

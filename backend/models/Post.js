@@ -1,24 +1,23 @@
-import { model, Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
-const PostSchema = new Schema (
+const PostSchema = new Schema(
     {
         title: { type: String, required: true },
         caption: { type: String, required: true },
         slug: { type: String, required: true, unique: true },
         body: { type: Object, required: true },
         photo: { type: String, required: false },
-        user: { type: Schema.Types.ObjectId, ref:"User" },
+        user: { type: Schema.Types.ObjectId, ref: "User" },
         tags: { type: [String] },
         categories: [{ type: Schema.Types.ObjectId, ref: "PostCategories" }],
     },
-    { timestamp: true }
+    { timestamps: true, toJSON: { virtuals: true } }
 );
 
-//membuat relasi dengan comment
 PostSchema.virtual("comments", {
     ref: "Comment",
     localField: "_id",
-    foreignField: "post"
+    foreignField: "post",
 });
 
 const Post = model("Post", PostSchema);
