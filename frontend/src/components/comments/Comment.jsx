@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiMessageSquare, FiEdit2, FiTrash } from 'react-icons/fi';
 
-import { images } from '../../constants';
+import { images, stables } from '../../constants';
 import CommentsForm from './CommentsForm';
 
 const Comment = ({
@@ -30,7 +30,14 @@ const Comment = ({
 
     return (
         <div className='flex flex-nowrap items-start gap-x-3 bg-[#fffff5] p-3 rounded-lg'>
-            <img src={images.PostProfileImage} alt="user profile" className='w-9 h-9 object-cover rounded-full' />
+            <img
+                src={
+                    comment?.user?.avatar
+                        ? stables.UPLOAD_FOLDER_BASE_URL + comment.user.avatar
+                        : images.defaultUserImage}
+                alt="user profile"
+                className='w-9 h-9 object-cover rounded-full'
+            />
             <div className='flex-1 flex flex-col'>
                 <h5 className='font-bold text-dark-light text-xs lg:text-sm'>
                     {comment.user.name}

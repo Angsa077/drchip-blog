@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getSinglePost } from '../../services/index/posts';
 import ProjectDetailSkeleton from './components/ProjectDetailSkeleton';
 import ErrorMessage from '../../components/ErrorMessage';
+import { useSelector } from 'react-redux';
 
 const postsData = [
     {
@@ -63,6 +64,7 @@ const tagsData = [
 
 const ProjectDetailPage = () => {
     const { slug } = useParams();
+    const userState = useSelector((state => state.user))
     const [breadCrumbsData, setbreadCrumbsData] = useState([]);
     const [body, setBody] = useState(null);
 
@@ -109,7 +111,12 @@ const ProjectDetailPage = () => {
 
                         <h1 className='text-xl font-medium font-roboto mt-4 text-dark-light md:text-[26px]'>{data?.title}</h1>
                         <div className='mt-4 prose prose-sm sm:prose-base'>{body}</div>
-                        <CommentsContainer className="mt-10" logginedUserId="a" />
+                        <CommentsContainer
+                            comments={data?.comments}
+                            className="mt-10"
+                            logginedUserId={userState?.userInfo?._id}
+                            postSlug={slug}
+                        />
                     </article>
                     <div>
                         <SuggestedPosts
