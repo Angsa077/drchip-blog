@@ -1,14 +1,15 @@
 import { verify } from "jsonwebtoken";
 import User from "../models/User";
+import Post from "../models/Post";
 
-export const authGuard = async (  req, res, next ) => {
+const authGuard = async (req, res, next) => {
     if (
-        req.headers.authorization && 
+        req.headers.authorization &&
         req.headers.authorization.startsWith("Bearer")
     ) {
         try {
             const token = req.headers.authorization.split(" ")[1];
-            const { id } = verify( token, process.env.JWT_SECRET);
+            const { id } = verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(id).select("-password");
             next();
         } catch (error) {
@@ -22,3 +23,15 @@ export const authGuard = async (  req, res, next ) => {
         next(error);
     }
 };
+
+const adminGuard = async (req, res, next) => {
+    if (req.user && req.user.admin) {
+        next();
+    } else {
+        let error = new Error("Dilarang masuk selain admin");
+        error.statusCode = 401;
+        next(error);
+    }
+};
+
+export { authGuard, adminGuard };
