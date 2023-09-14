@@ -60,7 +60,7 @@ const Header = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [navIsVisible, setNavIsVisible] = useState(false);
-    const userState = useSelector(state => state.user);
+    const userState = useSelector((state) => state.user);
     const [profileDropdown, setProfileDropdown] = useState(false);
 
     const navVisibilityHandler = () => {

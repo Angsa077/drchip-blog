@@ -13,7 +13,7 @@ import { userActions } from '../store/reducers/userReducers';
 const ProfilePicture = ({ avatar }) => {
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
-    const userState = useSelector(state => state.user)
+    const userState = useSelector((state) => state.user);
     const [openCrop, setOpenCrop] = useState(false);
     const [photo, setPhoto] = useState(null);
 

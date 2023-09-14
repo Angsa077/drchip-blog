@@ -12,7 +12,7 @@ import { userActions } from '../../store/reducers/userReducers';
 const LoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const userState = useSelector(state => state.user);
+    const userState = useSelector((state) => state.user);
 
     const { mutate, isLoading } = useMutation({
         mutationFn: ({ email, password }) => {

@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 
 const ProjectDetailPage = () => {
     const { slug } = useParams();
-    const userState = useSelector((state => state.user))
+    const userState = useSelector((state) => state.user);
     const [breadCrumbsData, setbreadCrumbsData] = useState([]);
     const [body, setBody] = useState(null);
 

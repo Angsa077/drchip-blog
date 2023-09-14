@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import CommentsForm from './CommentsForm';
 import Comment from './Comment';
@@ -9,7 +10,9 @@ import { toast } from "react-hot-toast";
 
 const CommentsContainer = ({ className, logginedUserId, comments, postSlug }) => {
     const queryClient = useQueryClient();
-    const userState = useSelector(state => state.user);
+    const userState = useSelector((state) => state.user);
+    const loggedIn = userState.userInfo && userState.userInfo.token !== null;
+    const navigate = useNavigate();
     const [affectedComment, setAffectedComment] = useState(null);
 
     const { mutate: mutateNewComment, isLoading: isLoadingNewComment } = useMutation({
@@ -56,14 +59,18 @@ const CommentsContainer = ({ className, logginedUserId, comments, postSlug }) =>
     });
 
     const addCommentHandler = (value, parent = null, replyOnUser = null) => {
-        mutateNewComment({
-            desc: value,
-            parent,
-            replyOnUser,
-            token: userState.userInfo.token,
-            slug: postSlug
-        })
-        setAffectedComment(null);
+        if (loggedIn) {
+            mutateNewComment({
+                desc: value,
+                parent,
+                replyOnUser,
+                token: userState.userInfo.token,
+                slug: postSlug
+            })
+            setAffectedComment(null);
+        } else {
+            navigate('/login');
+        }
     };
 
     const updateCommentHandler = (value, commentId) => {

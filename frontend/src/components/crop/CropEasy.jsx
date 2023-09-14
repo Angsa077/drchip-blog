@@ -8,7 +8,7 @@ import { userActions } from '../../store/reducers/userReducers';
 import toast from 'react-hot-toast';
 
 const CropEasy = ({ photo, setOpenCrop }) => {
-    const userState = useSelector(state => state.user)
+    const userState = useSelector((state) => state.user);
     const queryClient = useQueryClient();
     const dispatch = useDispatch();
     const [crop, setCrop] = useState({ x: 0, y: 0 });
