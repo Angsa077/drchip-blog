@@ -9,7 +9,7 @@ import { logout } from '../store/actions/user';
 
 const navItemsInfo = [
     { name: "Home", type: "link", href: "/" },
-    { name: "Project", type: "link", href: "/projects" },
+    { name: "Project", type: "link", href: "/project" },
     { name: "Harga", type: "link", href: "/harga" },
     { name: "Ketentuan", type: "link", href: "/ketentuan" },
     { name: "Tentang", type: "dropdown", items: [{ title: "Tentang Kami", href: "/tentang" }, { title: "Hubungi Kami", href: "/kontak" }] },
