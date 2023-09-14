@@ -1,17 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { generateHTML } from '@tiptap/html';
+import Bold from '@tiptap/extension-bold';
+import Document from '@tiptap/extension-document';
+import Paragraph from '@tiptap/extension-paragraph';
+import Text from '@tiptap/extension-text';
+import Italic from '@tiptap/extension-italic';
+import parse from 'html-react-parser';
+
 import BreadCrumbs from '../../components/BreadCrumbs';
 import MainLayout from '../../components/MainLayout';
-import { images } from '../../constants';
-import { Link } from 'react-router-dom';
+import { images, stables } from '../../constants';
 import SuggestedPosts from './container/SuggestedPosts';
 import CommentsContainer from '../../components/comments/CommentsContainer';
 import SocialShareButtons from '../../components/SocialShareButtons';
-
-const breadCrumbsData = [
-    { name: "Home", link: '/' },
-    { name: "Project", link: '/project' },
-    { name: "Project title", link: '/project/1' },
-];
+import { useQuery } from '@tanstack/react-query';
+import { getSinglePost } from '../../services/index/posts';
 
 const postsData = [
     {
@@ -56,19 +60,50 @@ const tagsData = [
 ];
 
 const ProjectDetailPage = () => {
+    const { slug } = useParams();
+    const [breadCrumbsData, setbreadCrumbsData] = useState([]);
+    const [body, setBody] = useState(null);
+
+    const { data } = useQuery({
+        queryFn: () => getSinglePost({ slug }),
+        queryKey: ['project', slug],
+        onSuccess: (data) => {
+            setbreadCrumbsData([
+                { name: "Home", link: '/' },
+                { name: "Project", link: '/project' },
+                { name: "Project title", link: `/project/${data.slug}` },
+            ]);
+            setBody(
+                parse(generateHTML(data?.body, [Bold, Italic, Paragraph, Document, Text])
+                )
+            )
+        },
+    });
+
     return (
         <MainLayout>
             <section className='container mx-auto max-w-7xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start'>
                 <article className='flex-1'>
                     <BreadCrumbs data={breadCrumbsData} />
-                    <img className='rounded-xl w-full' src={images.Post1Image} alt="Kaminata" />
-                    <Link to="/project?kategori=kategoriDipilih" className='text-primary text-sm font-roboto inline-block mt-4 md:text-base'>
-                        GALLERY
-                    </Link>
-                    <h1 className='text-xl font-medium font-roboto mt-4 text-dark-light md:text-[26px]'>Website Gallery Kaminata Architecture</h1>
-                    <div className='mt-4 text-dark-light'>
-                        <p className='text-dark-light'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem dignissimos iste eaque obcaecati, animi quos beatae minima consequuntur temporibus quam.</p>
+                    <img
+                        className='rounded-xl w-full'
+                        src={data?.photo ? stables.UPLOAD_FOLDER_BASE_URL | data?.photo : images.defaultPostImage}
+                        alt={data?.title}
+                    />
+
+                    <div className='mt-4 flex gap-2'>
+                        {data?.categories.map((kategori) => (
+                            <Link
+                                to={`/project?kategori=${kategori.name}`}
+                                className='text-primary text-sm font-roboto inline-block mt-4 md:text-base'
+                            >
+                                {kategori.name}
+                            </Link>
+                        ))}
                     </div>
+
+                    <h1 className='text-xl font-medium font-roboto mt-4 text-dark-light md:text-[26px]'>{data?.title}</h1>
+                    <div className='mt-4 prose prose-sm sm:prose-base'>{body}</div>
                     <CommentsContainer className="mt-10" logginedUserId="a" />
                 </article>
                 <div>
