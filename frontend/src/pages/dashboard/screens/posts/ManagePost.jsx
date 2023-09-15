@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { images, stables } from '../../../../constants';
-import { getAllPosts } from '../../../../services/index/posts';
+import { deletePost, getAllPosts } from '../../../../services/index/posts';
 import Pagination from '../../../../components/Pagination';
+import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { FaTrash, FaEdit } from 'react-icons/fa';
 
 let isFirstRun = true;
 
 const ManagePost = () => {
+    const userState = useSelector((state) => state.user);
+    const queryClient = useQueryClient();
     const [searchKeyword, setsearchKeyword] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -20,9 +26,27 @@ const ManagePost = () => {
         queryKey: ["posts"]
     });
 
+    const { mutate: mutateDeletePost, isLoading: isLoadingDeletePost } =
+        useMutation({
+            mutationFn: ({ slug, token }) => {
+                return deletePost({
+                    slug,
+                    token
+                });
+            },
+            onSuccess: (data) => {
+                queryClient.invalidateQueries(["posts"]);
+                toast.success("Project berhasil dihapus")
+            },
+            onError: (error) => {
+                toast.error(error.message);
+                console.log(error);
+            },
+        });
+
     useEffect(() => {
-        if(isFirstRun){
-            isFirstRun =false;
+        if (isFirstRun) {
+            isFirstRun = false;
             return;
         }
         refetch();
@@ -39,14 +63,18 @@ const ManagePost = () => {
         refetch();
     }
 
+    const deletePostHandler = ({ slug, token }) => {
+        mutateDeletePost({ slug, token });
+    };
+
     return (
         <div>
-            <h1 className='text-2xl font-semibold'>Manage Posts</h1>
+            <h1 className='text-2xl font-semibold'>Manage Projects</h1>
             <div className="w-full px-4 mx-auto sm:px-8">
                 <div className="py-8">
                     <div className="flex flex-row justify-between w-full mb-1 sm:mb-0">
                         <h2 className="text-2xl leading-tight">
-                            Post
+                            Project
                         </h2>
                         <div className="text-end">
                             <form onSubmit={submitsearchKeywordHandler} className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
@@ -92,6 +120,12 @@ const ManagePost = () => {
                                         <tr>
                                             <td colSpan={5} className='text-center py-10 w-full'>
                                                 Loading...
+                                            </td>
+                                        </tr>
+                                    ) : postsData?.data?.length === 0 ? (
+                                        <tr>
+                                            <td colSpan={5} className='text-center py-10 w-full'>
+                                                Tidak ada project
                                             </td>
                                         </tr>
                                     ) : (
@@ -142,13 +176,26 @@ const ManagePost = () => {
                                                                     {post.tags.length - 1 !== index && ","}
                                                                 </p>
                                                             ))
-                                                            : "tidak memiliki tagas"}
+                                                            : "tidak memiliki tagar"}
                                                     </div>
                                                 </td>
+
                                                 <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
-                                                    <a href="/" className="text-primary hover:text-[#ffc05b]">
-                                                        Edit
-                                                    </a>
+                                                    <div className="flex space-x-2">
+                                                        <Link to="/" className="rounded-md px-3 py-1 bg-primary text-white hover:bg-[#ffc05b]">
+                                                            <FaEdit />
+                                                        </Link>
+                                                        <button
+                                                            disabled={isLoadingDeletePost}
+                                                            type='button'
+                                                            className='rounded-md px-3 py-1 text-white bg-red-600 hover:bg-red-900 disabled:opacity-70 disabled:cursor-not-allowed'
+                                                            onClick={() => {
+                                                                deletePostHandler({ slug: post?.slug, token: userState.userInfo.token })
+                                                            }}
+                                                        >
+                                                            <FaTrash />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))

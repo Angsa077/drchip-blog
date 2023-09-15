@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const getAllPosts = async (searchKeyword = "", page = 1, limit = 1) => {
+const getAllPosts = async (searchKeyword = "", page = 1, limit = 3) => {
     try {
         const { data, headers } = await axios.get(
             `/api/posts?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`
@@ -24,4 +24,21 @@ const getSinglePost = async ({ slug }) => {
     }
 };
 
-export { getAllPosts, getSinglePost };
+const deletePost = async ({ slug, token }) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    };
+
+    try {
+        const { data } = await axios.delete(`/api/posts/${slug}`, config);
+        return data;
+    } catch (error) {
+        if (error.response && error.response.data.message)
+            throw new Error(error.response.data.message);
+        throw new Error(error.message);
+    }
+};
+
+export { getAllPosts, getSinglePost, deletePost };
