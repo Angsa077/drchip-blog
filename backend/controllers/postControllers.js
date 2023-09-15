@@ -142,7 +142,7 @@ const getPost = async (req, res, next) => {
 
 const getAllPosts = async (req, res, next) => {
     try {
-        const filter = req.query.searchKeyboard;
+        const filter = req.query.searchKeyword;
         let where = {};
         if (filter) {
             where.title = { $regex: filter, $options: "i" };
@@ -151,7 +151,7 @@ const getAllPosts = async (req, res, next) => {
         const page = parseInt(req.query.page) || 1;
         const pageSize = parseInt(req.query.limit) || 10;
         const skip = (page - 1) * pageSize;
-        const total = await Post.countDocuments();
+        const total = await Post.find(where).countDocuments();
         const pages = Math.ceil(total / pageSize);
 
         if (page > pages) {

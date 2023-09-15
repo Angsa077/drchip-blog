@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { images, stables } from '../../../../constants';
 import { getAllPosts } from '../../../../services/index/posts';
+import Pagination from '../../../../components/Pagination';
+
+let isFirstRun = true;
 
 const ManagePost = () => {
-    const [searchKeyboard, setSearchKeyboard] = useState("");
+    const [searchKeyword, setsearchKeyword] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
 
     const {
@@ -13,17 +16,26 @@ const ManagePost = () => {
         isFetching,
         refetch
     } = useQuery({
-        queryFn: () => getAllPosts(searchKeyboard, currentPage),
+        queryFn: () => getAllPosts(searchKeyword, currentPage),
         queryKey: ["posts"]
     });
 
-    const searchKeyboardHandler = (e) => {
+    useEffect(() => {
+        if(isFirstRun){
+            isFirstRun =false;
+            return;
+        }
+        refetch();
+    }, [refetch, currentPage]);
+
+    const searchKeywordHandler = (e) => {
         const { value } = e.target;
-        setSearchKeyboard(value);
+        setsearchKeyword(value);
     }
 
-    const submitSearchKeyboardHandler = (e) => {
+    const submitsearchKeywordHandler = (e) => {
         e.preventDefault();
+        setCurrentPage(1);
         refetch();
     }
 
@@ -37,15 +49,15 @@ const ManagePost = () => {
                             Post
                         </h2>
                         <div className="text-end">
-                            <form onSubmit={submitSearchKeyboardHandler} className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
+                            <form onSubmit={submitsearchKeywordHandler} className="flex flex-col justify-center w-3/4 max-w-sm space-y-3 md:flex-row md:w-full md:space-x-3 md:space-y-0">
                                 <div className=" relative ">
                                     <input
                                         type="text"
                                         id="&quot;form-subscribe-Filter"
                                         className=" rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                         placeholder="Masukan judul project..."
-                                        onChange={searchKeyboardHandler}
-                                        value={searchKeyboard}
+                                        onChange={searchKeywordHandler}
+                                        value={searchKeyword}
                                     />
                                 </div>
                                 <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-primary rounded-lg shadow-md hover:bg-[#ffc05b] focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-purple-200" type="submit">
@@ -144,34 +156,13 @@ const ManagePost = () => {
 
                                 </tbody>
                             </table>
-                            <div className="flex flex-col items-center px-5 py-5 bg-white xs:flex-row xs:justify-between">
-                                <div className="flex items-center">
-                                    <button type="button" className="w-full p-4 text-base text-gray-600 bg-white border rounded-l-xl hover:bg-gray-100">
-                                        <svg width="9" fill="currentColor" height="8" className="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                    <button type="button" className="w-full px-4 py-2 text-base text-primary bg-white border-t border-b hover:bg-gray-100 ">
-                                        1
-                                    </button>
-                                    <button type="button" className="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100">
-                                        2
-                                    </button>
-                                    <button type="button" className="w-full px-4 py-2 text-base text-gray-600 bg-white border-t border-b hover:bg-gray-100">
-                                        3
-                                    </button>
-                                    <button type="button" className="w-full px-4 py-2 text-base text-gray-600 bg-white border hover:bg-gray-100">
-                                        4
-                                    </button>
-                                    <button type="button" className="w-full p-4 text-base text-gray-600 bg-white border-t border-b border-r rounded-r-xl hover:bg-gray-100">
-                                        <svg width="9" fill="currentColor" height="8" className="" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19-19-19-45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
-                            </div>
+                            {!isLoading && (
+                                <Pagination
+                                    onPageChange={(page) => setCurrentPage(page)}
+                                    currentPage={currentPage}
+                                    totalPageCount={JSON.parse(postsData?.headers?.['x-totalpagecount'])}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -180,4 +171,4 @@ const ManagePost = () => {
     )
 }
 
-export default ManagePost
+export default ManagePost;

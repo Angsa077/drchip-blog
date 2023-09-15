@@ -1,9 +1,9 @@
 import axios from "axios";
 
-const getAllPosts = async (searchKeyboard = "", page = 1, limit = 10) => {
+const getAllPosts = async (searchKeyword = "", page = 1, limit = 1) => {
     try {
         const { data, headers } = await axios.get(
-            `/api/posts?searchKeyboard=${searchKeyboard}&page=${page}&limit=${limit}`
+            `/api/posts?searchKeyword=${searchKeyword}&page=${page}&limit=${limit}`
         );
         return { data, headers };
     } catch (error) {
