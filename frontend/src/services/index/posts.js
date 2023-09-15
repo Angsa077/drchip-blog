@@ -58,4 +58,21 @@ const updatePost = async ({ updatedData, slug, token }) => {
     }
 };
 
-export { getAllPosts, getSinglePost, deletePost, updatePost };
+const createPost = async ({ token }) => {
+    try {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+
+        const { data } = await axios.post(`/api/posts`, {}, config);
+        return data;
+    } catch (error) {
+        if (error.response && error.response.data.message)
+            throw new Error(error.response.data.message);
+        throw new Error(error.message);
+    }
+};
+
+export { getAllPosts, getSinglePost, deletePost, updatePost, createPost };

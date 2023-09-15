@@ -36,7 +36,7 @@ const EditPost = () => {
         },
         onSuccess: (data) => {
             queryClient.invalidateQueries(["project", slug]);
-            toast.success("Post is updated");
+            toast.success("Project berhasil disimpan");
         },
         onError: (error) => {
             toast.error(error.message);
@@ -161,7 +161,7 @@ const EditPost = () => {
                             onClick={handleUpdatePost}
                             className="w-full bg-green-500 text-white font-semibold rounded-lg px-4 py-2 disabled:cursor-not-allowed disabled:opacity-70"
                         >
-                            Update Post
+                            Simpan
                         </button>
                     </article>
                 </section>

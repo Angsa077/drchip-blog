@@ -13,6 +13,7 @@ import ProjectDetailSkeleton from './components/ProjectDetailSkeleton';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useSelector } from 'react-redux';
 import parseJsonToHtml from '../../utils/parseJsonToHtml';
+import Editor from "../../components/editor/Editor";
 
 const ProjectDetailPage = () => {
     const { slug } = useParams();
@@ -49,11 +50,14 @@ const ProjectDetailPage = () => {
                     <article className='flex-1'>
                         <BreadCrumbs data={breadCrumbsData} />
                         <img
-                            className='rounded-xl w-full'
-                            src={data?.photo ? stables.UPLOAD_FOLDER_BASE_URL | data?.photo : images.defaultPostImage}
+                            className="rounded-xl w-full"
+                            src={
+                                data?.photo
+                                    ? stables.UPLOAD_FOLDER_BASE_URL + data?.photo
+                                    : images.defaultPostImage
+                            }
                             alt={data?.title}
                         />
-
                         <div className='mt-4 flex gap-2'>
                             {data?.categories.map((kategori) => (
                                 <Link
@@ -65,8 +69,15 @@ const ProjectDetailPage = () => {
                             ))}
                         </div>
 
-                        <h1 className='text-xl font-medium font-roboto mt-4 text-dark-light md:text-[26px]'>{data?.title}</h1>
-                        <div className='mt-4 prose prose-sm sm:prose-base'>{body}</div>
+                        <h1 className='text-xl font-medium font-roboto mt-4 text-dark-light md:text-[26px]'>
+                            {data?.title}
+                        </h1>
+                        {/* <div className='mt-4 prose prose-sm sm:prose-base'>{body}</div> */}
+                        <div className="w-full">
+                            {!isLoading && !isError && (
+                                <Editor content={data?.body} editable={false} />
+                            )}
+                        </div>
                         <CommentsContainer
                             comments={data?.comments}
                             className="mt-10"

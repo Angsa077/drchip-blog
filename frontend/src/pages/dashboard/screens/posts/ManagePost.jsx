@@ -137,9 +137,9 @@ const ManagePost = () => {
                                                             <a href="/" className="relative block">
                                                                 <img
                                                                     src={
-                                                                        post?.image
+                                                                        post?.photo
                                                                             ? stables.UPLOAD_FOLDER_BASE_URL
-                                                                            + post?.image
+                                                                            + post?.photo
                                                                             : images.defaultPostImage}
                                                                     alt={post.title}
                                                                     className="mx-auto object-cover rounded-sm w-10 aspect-square" />

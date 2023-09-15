@@ -10,7 +10,6 @@ import ProfilePage from './pages/profile/ProfilePage';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import Dashboard from './pages/dashboard/screens/Dashboard';
 import Comments from './pages/dashboard/screens/comments/Comments';
-import NewPost from './pages/dashboard/screens/posts/NewPost';
 import ManagePost from './pages/dashboard/screens/posts/ManagePost';
 import EditPost from './pages/dashboard/screens/posts/EditPost';
 
@@ -26,7 +25,6 @@ function App() {
         <Route path='/dashboard' element={<DashboardLayout />}>
           <Route index element={<Dashboard />} />
           <Route path='comments' element={<Comments />} />
-          <Route path='posts/new' element={<NewPost />} />
           <Route path='posts/manage' element={<ManagePost />} />
           <Route path='posts/manage/edit/:slug' element={<EditPost />} />
         </Route>
