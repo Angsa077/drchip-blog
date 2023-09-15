@@ -142,7 +142,7 @@ const getPost = async (req, res, next) => {
 
 const getAllPosts = async (req, res, next) => {
     try {
-        const filter = req.query.search;
+        const filter = req.query.searchKeyboard;
         let where = {};
         if (filter) {
             where.title = { $regex: filter, $options: "i" };

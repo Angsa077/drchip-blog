@@ -31,7 +31,7 @@ const Projects = () => {
                 ) : isError ? (
                     <ErrorMessage message="Tidak dapat menampilkan halaman" />
                 ) : (
-                    data.map((post) => (
+                    data?.data.map((post) => (
                         <ProjectCard
                             key={post._id}
                             post={post}
