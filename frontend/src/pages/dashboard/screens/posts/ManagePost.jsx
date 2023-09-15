@@ -182,7 +182,8 @@ const ManagePost = () => {
 
                                                 <td className="px-5 py-5 text-sm bg-white border-b border-gray-200">
                                                     <div className="flex space-x-2">
-                                                        <Link to="/" className="rounded-md px-3 py-1 bg-primary text-white hover:bg-[#ffc05b]">
+                                                        <Link to={`/dashboard/posts/manage/edit/${post?.slug}`}
+                                                            className="rounded-md px-3 py-1 bg-primary text-white hover:bg-[#ffc05b]">
                                                             <FaEdit />
                                                         </Link>
                                                         <button

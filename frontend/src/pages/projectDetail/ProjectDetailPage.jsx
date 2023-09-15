@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { generateHTML } from '@tiptap/html';
-import Bold from '@tiptap/extension-bold';
-import Document from '@tiptap/extension-document';
-import Paragraph from '@tiptap/extension-paragraph';
-import Text from '@tiptap/extension-text';
-import Italic from '@tiptap/extension-italic';
-import parse from 'html-react-parser';
 
 import BreadCrumbs from '../../components/BreadCrumbs';
 import MainLayout from '../../components/MainLayout';
@@ -19,6 +12,7 @@ import { getAllPosts, getSinglePost } from '../../services/index/posts';
 import ProjectDetailSkeleton from './components/ProjectDetailSkeleton';
 import ErrorMessage from '../../components/ErrorMessage';
 import { useSelector } from 'react-redux';
+import parseJsonToHtml from '../../utils/parseJsonToHtml';
 
 const ProjectDetailPage = () => {
     const { slug } = useParams();
@@ -35,10 +29,7 @@ const ProjectDetailPage = () => {
                 { name: "Project", link: '/project' },
                 { name: "Project title", link: `/project/${data.slug}` },
             ]);
-            setBody(
-                parse(generateHTML(data?.body, [Bold, Italic, Paragraph, Document, Text])
-                )
-            )
+            setBody(parseJsonToHtml(data?.body));
         },
     });
 
@@ -51,7 +42,9 @@ const ProjectDetailPage = () => {
         <MainLayout>
             {isLoading ? (
                 <ProjectDetailSkeleton />
-            ) : isError ? <ErrorMessage message="Tidak dapat menampilkan halaman" /> : (
+            ) : isError ? (
+                <ErrorMessage message="Tidak dapat menampilkan halaman" />
+            ) : (
                 <section className='container mx-auto max-w-7xl flex flex-col px-5 py-5 lg:flex-row lg:gap-x-5 lg:items-start'>
                     <article className='flex-1'>
                         <BreadCrumbs data={breadCrumbsData} />
